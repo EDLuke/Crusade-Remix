@@ -63,7 +63,7 @@ function handleFileLoad(event) {
 
     var item = event.item; //A refernce to the item that was passed in to the LoadQueue
     var type = item.type;
-    
+
     switch (type)
     {
         case createjs.LoadQueue.IMAGE:
@@ -81,14 +81,20 @@ function handleFileLoad(event) {
 
 function showTitleView() {
     console.log("Adding Title View");
-    
-    titleBg = spriteSheet[0];
 
-    titleBg.x = 400;
-    titleBg.y = 300;
+    titleBg = spriteSheet[0];
+    titleBg.scaleX = 0.1;
+    titleBg.scaleY = 0.1;
+    titleBg.x = 100;
+    titleBg.y = 100;
     titleBg.name = 'titleBg';
 
-  
+
+    var circle = new createjs.Shape();
+    circle.graphics.beginFill("red").drawCircle(0, 0, 50);
+    circle.x = 100;
+    circle.y = 100;
+    stage.addChild(circle);
 
     titleView.addChild(titleBg);
     stage.addChild(titleView);
