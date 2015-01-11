@@ -47,18 +47,18 @@ function preload() {
     console.log("Preloading");
 
     manifest = [
-        {src: "sprites/ui/title.png",       id: "titleBg"},
-        {src: "sprites/ui/startBtn.png",    id: "startBtn"},
-        {src: "sprites/ui/creditsBtn.png",  id: "creditsBtn"},
-        {src: "sprites/tiles/Tile.png",     id: "tile"},
-        {src: "sprites/tiles/Floor.png",    id: "floor"},
-        {src: "sprites/tiles/Wall.png",     id: "wall"},
-        {src: "sprites/tiles/Door0.png",    id: "doorOne"},
-        {src: "sprites/tiles/Door1.png",    id: "doorTwo"},
-        {src: "sprites/players/Player0.png",id: "playerOne"},
-        {src: "sprites/players/Player1.png",id: "playerTwp"},
-        {src: "sprites/enemys/Demon0.png",  id: "enemyOne"},
-        {src: "sprites/enemys/Demon1.png",  id: "enemyTwo"}
+        {src: "sprites/ui/title.png", id: "titleBg"},
+        {src: "sprites/ui/startBtn.png", id: "startBtn"},
+        {src: "sprites/ui/creditsBtn.png", id: "creditsBtn"},
+        {src: "sprites/tiles/Tile.png", id: "tile"},
+        {src: "sprites/tiles/Floor.png", id: "floor"},
+        {src: "sprites/tiles/Wall.png", id: "wall"},
+        {src: "sprites/tiles/Door0.png", id: "doorOne"},
+        {src: "sprites/tiles/Door1.png", id: "doorTwo"},
+        {src: "sprites/players/Player0.png", id: "playerOne"},
+        {src: "sprites/players/Player1.png", id: "playerTwp"},
+        {src: "sprites/enemys/Demon0.png", id: "enemyOne"},
+        {src: "sprites/enemys/Demon1.png", id: "enemyTwo"}
     ];
 
     preloader = new createjs.LoadQueue();
@@ -66,13 +66,17 @@ function preload() {
     preloader.on("complete", handleComplete, this);
     preloader.on("progress", handleProgress, this);
     preloader.loadManifest(manifest);
+    
+    //Set Tick
+    createjs.Ticker.setFPS(60);
+    createjs.Ticker.addEventListener("tick", stage);
 }
 
 function handleProgress(event) {
     /*Use event.loaded to get the percentage of the loading*/
-    
+
     console.log(parseInt(event.loaded * 100, 10) + "% completed");
-    
+
 }
 
 function handleComplete(event) {
@@ -107,7 +111,7 @@ function handleClick(event) {
 
     switch (targetId) {
         case "startBtn":
-            showGameView();
+            tweenTitleView();
             break;
         case "creditsBtn":
 
@@ -158,9 +162,15 @@ function hideCredits() {
 
 //Tween Title View
 function tweenTitleView() {
-    console.log("Start game");
-
-    Tween.get(titleView).to({y: -320}, 300).call(showGameView);
+    console.log("Tweening Title View");
+    
+    //Turn off click listeners
+    startBtn.off("click");
+    creditsBtn.off("click");
+    
+    createjs.Tween.get(titleView)
+            .to({scaleX: 1.5, scaleY: 1.5, x: -200, y: -100, alpha: 0}, 1500, createjs.Ease.getPowInOut(5)) 
+            .call(showGameView);
 }
 
 //Game View
@@ -169,6 +179,6 @@ function showGameView() {
 
     stage.removeChild(titleView);
     titleView = null;
-    credits = null;
+    credits = null; 
     stage.update();
 }
